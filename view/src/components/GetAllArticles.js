@@ -1,40 +1,21 @@
 import React, { Component } from 'react';
-import request from 'request';
+
+import ArticleLayout from './ArticleLayout';
 
 class GetAllArticles extends Component {
-  state = {
-    articles: []
-  }
-
-  componentDidMount() {
-    request('http://localhost:3001/', (err, res, body) => {
-      this.setState({
-        articles: JSON.parse(body)
-      });
-    })
-  }
-
-  keepId = (id) => {
-    this.props.setClickId(id)
-  }
 
   render() {
     return (
-      <div>
-        {this.state.articles.map((article, i) =>
-          (<div key={i}>
-
-            <h1 onClick={
-              () => this.keepId(article._id)
-            }>{article.title}</h1>
-            <p>{article.content}</p>
-            <p>
-              <span>By {article.author} </span>
-              ---
-              <span> on {article.date}</span>
-            </p>
-
-          </div>)
+      <div className="columns">
+        {this.props.articlesList.map((article, i) =>
+          (
+            <div className="column col-4 my-2" key={i} onClick={() => {
+              this.props.setArticleToShow(article);
+              this.props.toggleShowAll();
+            }}>
+              <ArticleLayout article={article} />
+            </div>
+          )
         )}
       </div>
     );

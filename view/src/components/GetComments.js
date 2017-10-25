@@ -7,16 +7,12 @@ class GetComments extends Component {
       <div>
         {this.props.comments &&
           this.props.comments.map((comment, i) =>
-            (<div key={i}>
-              <h2>{comment.title}</h2>
+            (<blockquote key={i}>
+              <p><b>{comment.title}</b></p>
               <p>{comment.message}</p>
-              <p>
-                <span>{comment.author} </span>
-                ---
-                <span> {comment.date}</span>
-              </p>
-              <a href={`http://localhost:3001/${comment._id}/removeComment`}>Delete comment</a>
-            </div>)
+              <cite>- {comment.author} on {comment.date} </cite>
+              <a className="btn btn-sm" href={`http://localhost:3001/${comment._id}/removeComment`}>Delete comment</a>
+            </blockquote>)
           )}
       </div>
     );

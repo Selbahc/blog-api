@@ -25,11 +25,11 @@ router.get('/', (req, res) => {
   })
 });
 
-// GET ONE ARTICLE WITH COMMENTS
-router.get('/:articleId/details',
+// GET ALL ARTICLES WITH COMMENTS
+router.get('/details',
   bodyParser.urlencoded({extended: true}),
   (req, res) => {
-  Article.findById(req.params.articleId).populate('comments').exec((err, article) => {
+  Article.find().populate('comments').exec((err, article) => {
     err ? res.send(err) : res.json(article);
   });
 });
@@ -49,7 +49,9 @@ router.post('/:articleId/newComment',
 
         article.comments = [...article.comments, newComment];
 
-        article.save(err => err ? res.send(err) : res.redirect('http://localhost:3000/'));
+        article.save(err => err ?           res.send(err) :
+        res.json({"saved": "Thanks ! Your comment has been saved"})
+        );
       });
     });
 });
