@@ -37,7 +37,6 @@ class NewComment extends Component {
         });
         setTimeout(() => this.setState({saved: ''}), 4000);
       });
-
   }
 
   render() {

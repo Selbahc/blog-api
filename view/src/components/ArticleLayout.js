@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import RemoveArticle from './RemoveArticle';
 
 class ArticleLayout extends Component {
 
@@ -8,6 +9,9 @@ class ArticleLayout extends Component {
       <div className="card">
 
         <div className="card-header">
+          {this.props.removable &&
+            <RemoveArticle articleId={article._id}/>
+          }
           <div className="card-title h5">{article.title}</div>
           <div className="card-subtitle text-gray">By {article.author}</div>
         </div>

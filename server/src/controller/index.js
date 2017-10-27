@@ -1,5 +1,5 @@
-import { Router } from 'express';
-import bodyParser from 'body-parser';
+import express, { Router } from 'express';
+
 import Article from '../model/articleSchema';
 import Comment from '../model/commentSchema';
 
@@ -7,13 +7,13 @@ const router = Router();
 
 // ADD NEW ARTICLE
 router.post('/newArticle',
-  bodyParser.urlencoded({extended: true}),
+  express.urlencoded({extended: true}),
   (req, res) => {
     const newArticle = new Article(req.body);
 
     newArticle.save(err => {
       if (err) return res.send(err);
-      res.redirect('http://localhost:3000');
+      res.json({"saved": "Thanks ! Your article has been saved"});
     });
 });
 
@@ -26,9 +26,7 @@ router.get('/', (req, res) => {
 });
 
 // GET ALL ARTICLES WITH COMMENTS
-router.get('/details',
-  bodyParser.urlencoded({extended: true}),
-  (req, res) => {
+router.get('/details', (req, res) => {
   Article.find().populate('comments').exec((err, article) => {
     err ? res.send(err) : res.json(article);
   });
@@ -36,7 +34,7 @@ router.get('/details',
 
 // ADD NEW COMMENT
 router.post('/:articleId/newComment',
-  bodyParser.urlencoded({extended: true}),
+  express.urlencoded({extended: true}),
   (req, res) => {
     Article.findById(req.params.articleId, (err, article) => {
       if (err) return res.send(err);
@@ -49,8 +47,9 @@ router.post('/:articleId/newComment',
 
         article.comments = [...article.comments, newComment];
 
-        article.save(err => err ?           res.send(err) :
-        res.json({"saved": "Thanks ! Your comment has been saved"})
+        article.save(err => err ?
+          res.send(err) :
+          res.json({"saved": "Thanks ! Your comment has been saved"})
         );
       });
     });
@@ -58,7 +57,7 @@ router.post('/:articleId/newComment',
 
 // REMOVE ONE ARTICLE AND ALL COMMENTS ATTACHED
 router.get('/:articleId/removeArticle',
-  bodyParser.urlencoded({extended: true}),
+  express.urlencoded({extended: true}),
   (req, res) => {
     Article.findByIdAndRemove(req.params.articleId, (err, article) => {
       if (err) return res.send(err);
@@ -75,7 +74,7 @@ router.get('/:articleId/removeArticle',
 
 // REMOVE ONE COMMENT
 router.get('/:commentId/removeComment',
-  bodyParser.urlencoded({extended: true}),
+  express.urlencoded({extended: true}),
   (req, res) => {
     Comment.findByIdAndRemove(req.params.commentId, (err, comment) => {
       err ? res.send(err) : res.redirect('http://localhost:3000/');
@@ -85,7 +84,7 @@ router.get('/:commentId/removeComment',
 
 // EDIT ONE COMMENT
 router.post('/:commentId/editComment',
-  bodyParser.urlencoded({extended: true}),
+  express.urlencoded({extended: true}),
   (req, res) => {
     Comment.findByIdAndUpdate(req.params.commentId, req.body, (err, comment) => {
       err ? res.send(err) : res.json({"OK" : `Comment '${comment.title}' updated`})
@@ -94,7 +93,7 @@ router.post('/:commentId/editComment',
 
 // EDIT ONE ARTICLE
 router.post('/:articleId/editArticle',
-  bodyParser.urlencoded({extended: true}),
+  express.urlencoded({extended: true}),
   (req, res) => {
     Article.findByIdAndUpdate(req.params.articleId, req.body, (err, article) => {
       err ? res.send(err) : res.json({"OK" : `Article '${article.title}' updated`})

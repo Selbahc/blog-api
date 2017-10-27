@@ -17,6 +17,14 @@ class App extends Component {
   }
 
   componentDidMount() {
+    this.fetchArticles();
+  }
+
+  componentDidUpdate () {
+    this.fetchArticles();
+  }
+
+  fetchArticles = () => {
     request('http://localhost:3001/details', (err, res, body) => {
       this.setState({
         articlesList: JSON.parse(body)
@@ -38,6 +46,7 @@ class App extends Component {
     return (
       <div className="App container">
         <Header />
+
         {this.state.showAllArticles &&
           <div>
             <NewArticle />
@@ -46,6 +55,7 @@ class App extends Component {
               setArticleToShow={this.setArticleToShow}/>
           </div>
         }
+
         {!this.state.showAllArticles &&
           <GetOneArticle toggleShowAll={this.toggleShowAll}
             article={this.state.article} />
