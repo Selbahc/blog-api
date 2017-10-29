@@ -53,32 +53,30 @@ class NewComment extends Component {
             <form className="form-group col-4"
               onSubmit={this.handleSubmit}>
 
-              <label className="form-label"
-              htmlFor="title">Title</label>
-              <input className="form-input"
-                id="title"
-                type="text"
-                name="title"
-                onChange={this.getInputValue}
-                value={this.state.title}/>
-
-              <label className="form-label"
-              htmlFor="author">Author</label>
-              <input className="form-input"
+              <input className="form-input my-1"
                 id="author"
                 type="text"
                 name="author"
                 onChange={this.getInputValue}
-                value={this.state.author}/>
+                value={this.state.author}
+              placeholder="Your Name"/>
 
-              <label className="form-label"
-              htmlFor="message">Message</label>
-              <textarea className="form-input"
+              <input className="form-input my-1"
+                id="title"
+                type="text"
+                name="title"
+                onChange={this.getInputValue}
+                value={this.state.title}
+              placeholder="Title"/>
+
+              <textarea className="form-input my-1"
                 id="message"
                 name="message"
                 rows="3"
                 onChange={this.getInputValue}
-                value={this.state.message}></textarea>
+                value={this.state.message}
+              placeholder="Your comment">
+              </textarea>
 
               <input className="btn my-2" type="submit" value="Post Comment"/>
             </form>

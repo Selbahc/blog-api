@@ -17,19 +17,23 @@ router.post('/newArticle',
     });
 });
 
-// GET ALL ARTICLES
-router.get('/', (req, res) => {
-  Article.find({}, (err, articles) => {
-    if (err) return res.send(err);
-    res.json(articles);
-  })
+// GET ONE ARTICLE WITH COMMENTS
+router.get('/:articleId', (req, res) => {
+  Article.findById(req.params.articleId)
+    .populate('comments')
+    .exec((err, article) => {
+      if (err) return res.send(err);
+      res.json(article);
+    });
 });
 
 // GET ALL ARTICLES WITH COMMENTS
-router.get('/details', (req, res) => {
-  Article.find().populate('comments').exec((err, article) => {
-    err ? res.send(err) : res.json(article);
-  });
+router.get('/', (req, res) => {
+  Article.find()
+    .populate('comments')
+    .exec((err, articles) => {
+      err ? res.send(err) : res.json(articles);
+    });
 });
 
 // ADD NEW COMMENT
@@ -96,7 +100,7 @@ router.post('/:articleId/editArticle',
   express.urlencoded({extended: true}),
   (req, res) => {
     Article.findByIdAndUpdate(req.params.articleId, req.body, (err, article) => {
-      err ? res.send(err) : res.json({"OK" : `Article '${article.title}' updated`})
+      err ? res.send(err) : res.json({"saved" : `Article '${article.title}' updated`})
     });
 });
 

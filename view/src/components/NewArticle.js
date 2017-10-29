@@ -4,6 +4,7 @@ import request from 'request';
 class NewArticle extends Component {
   state = {
     modalActive: false,
+    editing: false,
     title: '',
     author: '',
     content: '',
@@ -24,11 +25,11 @@ class NewArticle extends Component {
     })
   }
 
-  handleSubmit = (e) => {
+  handleSubmit = (e, url) => {
     e.preventDefault();
 
     request.post({
-      url: 'http://localhost:3001/newArticle',
+      url,
       form: {
         title: this.state.title,
         author: this.state.author,
@@ -42,15 +43,50 @@ class NewArticle extends Component {
           content: '',
           saved: JSON.parse(body).saved
         });
-        setTimeout(() => this.setState({saved: ''}), 4000);
+        this.props.toggleNewArticle();
+        if (this.state.editing === false) {
+          setTimeout(() => {
+            this.setState({saved: ''});
+            this.props.toggleNewArticle();
+          }, 4000);
+        } else {
+          setTimeout(() => {
+            this.setState({
+              saved : '',
+              editing: false
+            });
+            this.props.toggleShowAll();
+          }, 4000);
+        }
+
       });
+  }
+
+  //EDIT ARTICLE
+  componentDidMount() {
+    if (this.props.article !== undefined)
+      return this.setState({
+        editing: true,
+        title: this.props.article.title,
+        author: this.props.article.author,
+        content: this.props.article.content
+      })
   }
 
   render() {
     return (
       <div className="text-center my-2">
-        {!this.state.modalActive && this.state.saved === '' &&
+        {!this.state.modalActive &&
+          this.state.saved === '' &&
+          this.state.editing === false &&
           <button onClick={this.toggleModal} className="btn btn-primary">Write New Article</button>
+        }
+
+        {/* // EDIT ARTICLE */}
+        {!this.state.modalActive &&
+          this.state.saved === '' &&
+          this.state.editing === true &&
+          <button onClick={this.toggleModal} className="btn btn-primary">Edit Article</button>
         }
 
         {this.state.saved !== '' &&
@@ -72,8 +108,7 @@ class NewArticle extends Component {
               </div>
               <div className="modal-body">
                 <div className="content">
-                  <form className="form-group"
-                  action="http://localhost:3001/newArticle" method="POST">
+                  <form className="form-group">
                     <label className="form-label" htmlFor="title">Title</label>
                     <input className="form-input" id="title" type="text" name="title" onChange={this.getInputValue}
                       value={this.state.title}/>
@@ -87,10 +122,20 @@ class NewArticle extends Component {
                 </div>
               </div>
               <div className="modal-footer">
-                <input className="btn my-2"
-                  type="submit"
-                  value="Post Your Article"
-                  onClick={this.handleSubmit}/>
+                {!this.state.editing &&
+                  <input className="btn my-2"
+                    type="submit"
+                    value="Post Your Article"
+                    onClick={(e) => this.handleSubmit(e, 'http://localhost:3001/newArticle')}/>
+                }
+
+                {/* // EDIT ARTICLE */}
+                {this.state.editing &&
+                  <input className="btn my-2"
+                    type="submit"
+                    value="Update Your Article"
+                    onClick={(e) => this.handleSubmit(e, `http://localhost:3001/${this.props.article._id}/editArticle`)}/>
+                }
               </div>
             </div>
           </div>
