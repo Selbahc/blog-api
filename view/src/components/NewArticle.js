@@ -37,6 +37,7 @@ class NewArticle extends Component {
       }},
       (err, httpResponse, body) => {
         this.toggleModal();
+        console.log(body.saved)
         this.setState({
           title: '',
           author: '',

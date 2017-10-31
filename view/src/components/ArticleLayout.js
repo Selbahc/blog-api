@@ -18,7 +18,7 @@ class ArticleLayout extends Component {
         </div>
 
         <div className="card-body">{article.content}</div>
-        
+
         <div className="card-footer text-gray"><i>Published on {article.date}</i></div>
       </div>
     );

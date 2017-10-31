@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import request from 'request';
+// import request from 'request';
 
 class GetComments extends Component {
 
