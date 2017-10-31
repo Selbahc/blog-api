@@ -47,6 +47,7 @@ class NewComment extends Component {
             {this.state.saved}
           </div>
         }
+
         {this.state.saved === '' &&
           <div>
             <h3>Add a new comment</h3>

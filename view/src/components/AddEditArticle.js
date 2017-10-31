@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import request from 'request';
 
-class NewArticle extends Component {
+class AddEditArticle extends Component {
   state = {
     modalActive: false,
     editing: false,
@@ -28,16 +28,17 @@ class NewArticle extends Component {
   handleSubmit = (e, url) => {
     e.preventDefault();
 
-    request.post({
-      url,
+    request.post(
+      {url,
       form: {
         title: this.state.title,
         author: this.state.author,
         content: this.state.content
       }},
       (err, httpResponse, body) => {
+        if (err) console.log(err)
+
         this.toggleModal();
-        console.log(body.saved)
         this.setState({
           title: '',
           author: '',
@@ -45,6 +46,7 @@ class NewArticle extends Component {
           saved: JSON.parse(body).saved
         });
         this.props.toggleNewArticle();
+
         if (this.state.editing === false) {
           setTimeout(() => {
             this.setState({saved: ''});
@@ -59,19 +61,19 @@ class NewArticle extends Component {
             this.props.toggleShowAll();
           }, 4000);
         }
-
       });
   }
 
-  //EDIT ARTICLE
+  // if editing mode
   componentDidMount() {
-    if (this.props.article !== undefined)
-      return this.setState({
+    if (this.props.article !== undefined) {
+      this.setState({
         editing: true,
         title: this.props.article.title,
         author: this.props.article.author,
         content: this.props.article.content
       })
+    }
   }
 
   render() {
@@ -83,7 +85,7 @@ class NewArticle extends Component {
           <button onClick={this.toggleModal} className="btn btn-primary">Write New Article</button>
         }
 
-        {/* // EDIT ARTICLE */}
+        {/* if editing mode */}
         {!this.state.modalActive &&
           this.state.saved === '' &&
           this.state.editing === true &&
@@ -100,39 +102,63 @@ class NewArticle extends Component {
           <div className="modal active">
             <div className="modal-overlay"></div>
             <div className="modal-container">
+
               <div className="modal-header">
-                <div className="text-error"><button
-                  className="btn btn-clear float-right"
-                  onClick={this.toggleModal}></button>
+                <div className="text-error">
+                  <button className="btn btn-clear float-right"
+                    onClick={this.toggleModal}>
+                  </button>
                 </div>
+
                 <div className="modal-title h5">Post New Article</div>
               </div>
+
               <div className="modal-body">
                 <div className="content">
                   <form className="form-group">
                     <label className="form-label" htmlFor="title">Title</label>
-                    <input className="form-input" id="title" type="text" name="title" onChange={this.getInputValue}
+                    <input
+                      className="form-input"
+                      id="title"
+                      type="text"
+                      name="title"
+                      onChange={this.getInputValue}
                       value={this.state.title}/>
+
                     <label className="form-label" htmlFor="author">Author</label>
-                    <input className="form-input" id="author" type="text" name="author" onChange={this.getInputValue}
+                    <input
+                      className="form-input"
+                      id="author"
+                      type="text"
+                      name="author"
+                      onChange={this.getInputValue}
                       value={this.state.author}/>
+
                     <label className="form-label" htmlFor="content">Content</label>
-                    <textarea className="form-input" id="content" name="content" rows="9" onChange={this.getInputValue}
+                    <textarea
+                      className="form-input"
+                      id="content"
+                      name="content"
+                      rows="9"
+                      onChange={this.getInputValue}
                       value={this.state.content}></textarea>
                   </form>
                 </div>
               </div>
+
               <div className="modal-footer">
                 {!this.state.editing &&
-                  <input className="btn my-2"
+                  <input
+                    className="btn my-2"
                     type="submit"
                     value="Post Your Article"
                     onClick={(e) => this.handleSubmit(e, 'http://localhost:3001/newArticle')}/>
                 }
 
-                {/* // EDIT ARTICLE */}
+                {/* if editing mode */}
                 {this.state.editing &&
-                  <input className="btn my-2"
+                  <input
+                    className="btn my-2"
                     type="submit"
                     value="Update Your Article"
                     onClick={(e) => this.handleSubmit(e, `http://localhost:3001/${this.props.article._id}/editArticle`)}/>
@@ -147,4 +173,4 @@ class NewArticle extends Component {
 
 }
 
-export default NewArticle;
+export default AddEditArticle;

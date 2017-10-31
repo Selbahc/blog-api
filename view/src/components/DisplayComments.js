@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 // import request from 'request';
 
-class GetComments extends Component {
+class DisplayComments extends Component {
 
     // request(`http://localhost:3001/${this.props.articleId}`, (err, res, body) => {
     //   console.log("OK");
@@ -14,6 +14,7 @@ class GetComments extends Component {
       <div>
         {this.props.comments &&
           this.props.comments.map((comment, i) =>
+
             (<blockquote className="col-4" key={i}>
               <a className="text-error" href={`http://localhost:3001/${comment._id}/removeComment`}>
                 <button className="btn btn-clear float-right"></button>
@@ -33,4 +34,4 @@ class GetComments extends Component {
 
 }
 
-export default GetComments;
+export default DisplayComments;

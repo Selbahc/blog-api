@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import request from 'request';
+
 import 'spectre.css/dist/spectre.min.css';
 import './App.css';
 
-import Header from './components/Header';
-import NewArticle from './components/NewArticle';
-import GetAllArticles from './components/GetAllArticles';
-import GetOneArticle from './components/GetOneArticle';
+import { Header }  from './components/Header';
+import AddEditArticle from './components/AddEditArticle';
+import DisplayAllArticles from './components/DisplayAllArticles';
+import DisplayOneArticle from './components/DisplayOneArticle';
 
 
 class App extends Component {
@@ -59,15 +60,17 @@ class App extends Component {
 
         {this.state.showAllArticles &&
           <div>
-            <NewArticle toggleNewArticle={this.toggleNewArticle}/>
-            <GetAllArticles articlesList={this.state.articlesList}
+            <AddEditArticle toggleNewArticle={this.toggleNewArticle}/>
+            <DisplayAllArticles
+              articlesList={this.state.articlesList}
               toggleShowAll={this.toggleShowAll}
               setArticleToShow={this.setArticleToShow}/>
           </div>
         }
 
         {!this.state.showAllArticles &&
-          <GetOneArticle toggleNewArticle={this.toggleNewArticle}
+          <DisplayOneArticle
+            toggleNewArticle={this.toggleNewArticle}
             toggleShowAll={this.toggleShowAll}
             article={this.state.article} />
         }

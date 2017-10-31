@@ -2,11 +2,11 @@ import React, { Component } from 'react';
 
 import ArticleLayout from './ArticleLayout';
 import NewComment from './NewComment';
-import GetComments from './GetComments';
-import NewArticle from './NewArticle';
+import DisplayComments from './DisplayComments';
+import AddEditArticle from './AddEditArticle';
 
 
-class GetOneArticle extends Component {
+class DisplayOneArticle extends Component {
   render() {
     let article = this.props.article;
     return (
@@ -14,11 +14,18 @@ class GetOneArticle extends Component {
         <div className="text-center">
           <button className="btn btn-primary my-2" onClick={this.props.toggleShowAll}>Go back to all articles</button>
         </div>
-        <ArticleLayout article={article} removable={true}/>
-        <NewArticle toggleNewArticle={this.props.toggleNewArticle}
+
+        <ArticleLayout
+          article={article}
+          removable={true}/>
+
+        <AddEditArticle
+          toggleNewArticle={this.props.toggleNewArticle}
           article={article}
           toggleShowAll={this.props.toggleShowAll}/>
-        <GetComments comments={article.comments}/>
+        
+        <DisplayComments comments={article.comments}/>
+
         <NewComment articleId={article._id} />
       </div>
     );
@@ -26,4 +33,4 @@ class GetOneArticle extends Component {
 
 }
 
-export default GetOneArticle;
+export default DisplayOneArticle;
