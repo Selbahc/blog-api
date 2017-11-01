@@ -12,7 +12,7 @@ import DisplayOneArticle from './components/DisplayOneArticle';
 
 class App extends Component {
   state = {
-    article: {},
+    displayedArticle: {},
     articlesList: [],
     showAllArticles: true,
     newArticle: false
@@ -31,6 +31,7 @@ class App extends Component {
 
   fetchArticles = () => {
     request('http://localhost:3001/', (err, res, body) => {
+      if (err) throw err;
       this.setState({
         articlesList: JSON.parse(body)
       });
@@ -38,7 +39,7 @@ class App extends Component {
   }
 
   setArticleToShow = (article) => {
-    this.setState({article})
+    this.setState({displayedArticle: article})
   }
 
   toggleNewArticle = () => {
@@ -72,7 +73,7 @@ class App extends Component {
           <DisplayOneArticle
             toggleNewArticle={this.toggleNewArticle}
             toggleShowAll={this.toggleShowAll}
-            article={this.state.article} />
+            article={this.state.displayedArticle} />
         }
       </div>
     );
