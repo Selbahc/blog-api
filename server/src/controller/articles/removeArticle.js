@@ -6,7 +6,6 @@ const router = Router();
 
 // REMOVE ONE ARTICLE AND ALL COMMENTS ATTACHED
 router.get('/:articleId/removeArticle',
-  express.urlencoded({extended: true}),
   (req, res) => {
     Article.findByIdAndRemove(req.params.articleId, (err, article) => {
       if (err) return res.send(err);

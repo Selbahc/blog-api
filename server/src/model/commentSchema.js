@@ -9,10 +9,10 @@ const commentSchema = mongoose.Schema({
     type: String,
     default: moment().format('MMMM Do YYYY, h:mm:ss a')
   },
-  article: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Article'
-  }
+  // article: {
+  //   type: mongoose.Schema.Types.ObjectId,
+  //   ref: 'Article'
+  // }
 }, {versionKey: false});
 
 export default mongoose.model('Comment', commentSchema);
